@@ -14,4 +14,8 @@
 		FontSize="20"
 		d:DataContext="{DynamicResource DemoModel}">
 
+    <Window.Resources>
+        <local:DemoModel x:Key="DemoModel" />
+    </Window.Resources>
+    
 </Window>

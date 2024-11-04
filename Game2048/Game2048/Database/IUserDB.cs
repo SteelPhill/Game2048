@@ -5,7 +5,7 @@ namespace Game2048.Database;
 
 public interface IUserDB
 {
-    IList<User> Users { get; }
+    List<User> Users { get; }
 
     void Add(User user);
     void Read();

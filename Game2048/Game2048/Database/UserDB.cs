@@ -9,7 +9,7 @@ public class UserDB : IUserDB
 {
     private const string UsersFileName = "Users.xml";
 
-    public IList<User> Users { get; private set; }
+    public List<User> Users { get; private set; }
 
     public void Add(User user)
     {

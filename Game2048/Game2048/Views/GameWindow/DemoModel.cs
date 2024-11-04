@@ -4,7 +4,7 @@ namespace Game2048.Views.GameWindow;
 
 public class DemoModel : GameViewModel
 {
-	public DemoModel() : base(Messenger.Default)
+	public DemoModel() : base(null, Messenger.Default)
 	{
 	}
 }
