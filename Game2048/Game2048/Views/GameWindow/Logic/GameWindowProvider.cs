@@ -10,28 +10,28 @@ public class GameWindowProvider : IGameWindowProvider
 {
 	private readonly IViewService _viewService;
 	private readonly IDispatcherHelper _dispatcherHelper;
-	private readonly GameViewModel.IFactory _gameViewModelFactory;
-	
+    private readonly GameViewModel.IFactory _gameFactory;
+
     private Window _gameWindow;
 
 	public GameWindowProvider(
 		IViewService viewService,
 		IDispatcherHelper dispatcherHelper,
-		GameViewModel.IFactory gameViewModelFactory)
+        GameViewModel.IFactory gameFactory)
 	{
 		_viewService = viewService;
 		_dispatcherHelper = dispatcherHelper;
-		_gameViewModelFactory = gameViewModelFactory;
+		_gameFactory = gameFactory;
 	}
 
 	public void Show(User user)
 	{
-		_dispatcherHelper.CheckBeginInvokeOnUI(() =>
-		{
-			_gameWindow ??= CreateWindow();
+        _dispatcherHelper.CheckBeginInvokeOnUI(() =>
+        {
+            _gameWindow ??= CreateWindow(user);
             Application.Current.MainWindow = _gameWindow;
             _gameWindow.Show();
-		});
+        });
     }
 
     public void CloseIfCreated()
@@ -39,13 +39,14 @@ public class GameWindowProvider : IGameWindowProvider
 		_dispatcherHelper.CheckBeginInvokeOnUI(() => _gameWindow?.Close());
 	}
 
-	private Window CreateWindow()
+	private Window CreateWindow(User user)
 	{
-		var viewModel = _gameViewModelFactory.Create();
-		var window = _viewService.CreateWindow(viewModel, WindowMode.Main);
+        var viewModel = _gameFactory.Create(user);
+        var window = _viewService.CreateWindow(viewModel, WindowMode.Main);
+        window.Closing += OnWindowClosing;
+        window.Show();
 
-		window.Closing += OnWindowClosing;
-		return window;
+        return window;
     }
 
     private void OnWindowClosing(object sender, CancelEventArgs e)

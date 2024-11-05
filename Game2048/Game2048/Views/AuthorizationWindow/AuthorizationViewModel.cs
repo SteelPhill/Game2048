@@ -82,14 +82,12 @@ public class AuthorizationViewModel : ViewModel<AuthorizationWindow>
         }
 
         _currentUser.IsRememberMe = IsRememberMe;
-
         _gameWindowProvider.Show(_currentUser);
-
-        _messenger.Send(new RequestCloseMessage(this, false));
+        _messenger.Send(new RequestCloseMessage(this, null));
     }
 
     private void OnCancel()
     {
-        _messenger.Send(new RequestCloseMessage(this, false));
+        _messenger.Send(new RequestCloseMessage(this, null));
     }
 }

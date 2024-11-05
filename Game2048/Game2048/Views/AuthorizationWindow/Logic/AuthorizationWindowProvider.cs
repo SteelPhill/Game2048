@@ -27,7 +27,7 @@ public class AuthorizationWindowProvider : IAuthorizationWindowProvider
 		{
 			_authorizationWindow ??= CreateWindow();
 			Application.Current.MainWindow = _authorizationWindow;
-			_authorizationWindow.ShowDialog();
+			_authorizationWindow.Show();
 		});
 	}
 

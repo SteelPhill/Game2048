@@ -17,5 +17,9 @@
     <Window.Resources>
         <local:DemoModel x:Key="DemoModel" />
     </Window.Resources>
-    
+
+    <TextBlock TextAlignment="Center"
+               VerticalAlignment="Center"
+			   Text="{Binding User.Name, Mode=TwoWay}"/>
+
 </Window>
