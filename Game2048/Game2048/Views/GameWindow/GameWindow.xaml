@@ -9,17 +9,32 @@
 		mc:Ignorable="d"
 		Title="{Binding Header, Mode=OneWay}"
 		WindowStartupLocation="CenterScreen"
-		Width="500"
-		Height="100"
-		FontSize="20"
+		Width="250"
+		Height="250"
+		FontSize="10"
 		d:DataContext="{DynamicResource DemoModel}">
 
     <Window.Resources>
         <local:DemoModel x:Key="DemoModel" />
+
+        <DataTemplate x:Key="DataTemplate_Level2">
+            <Button Content="{Binding}" Height="40" Width="50" Margin="4"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="DataTemplate_Level1">
+            <ItemsControl ItemsSource="{Binding}" ItemTemplate="{DynamicResource DataTemplate_Level2}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </DataTemplate>
     </Window.Resources>
 
-    <TextBlock TextAlignment="Center"
-               VerticalAlignment="Center"
-			   Text="{Binding User.Name, Mode=TwoWay}"/>
+    <Grid>
+        <ItemsControl ItemTemplate="{DynamicResource DataTemplate_Level1}" 
+				  ItemsSource="{Binding FieldModel.Field}"/>
+    </Grid>
 
 </Window>

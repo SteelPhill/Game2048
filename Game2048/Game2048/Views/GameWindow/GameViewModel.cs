@@ -1,9 +1,11 @@
-﻿using System.Windows.Input;
+﻿using System.Collections.ObjectModel;
+using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using Game2048.Base;
 using Game2048.Database;
 using Game2048.Entities;
+using Game2048.Models;
 
 namespace Game2048.Views.GameWindow;
 
@@ -11,20 +13,27 @@ public class GameViewModel : ViewModel<GameWindow>
 {
 	public override object Header => "2048";
 
-	private readonly IUserDB _userDB;
+    private readonly IUserDB _userDB;
 	private readonly IMessenger _messenger;
 
 	private User _user;
+    private FieldModel _fieldModel;
 
-	public User User
+    public User User
     {
         get => _user;
         set => Set(ref _user, value);
     }
 
-    private ICommand _anyCommand;
+    public FieldModel FieldModel
+    {
+        get => _fieldModel;
+        set => Set(ref _fieldModel, value);
+    }
 
-	public ICommand AnyCommand => _anyCommand ??= new RelayCommand(Any);
+    private ICommand _keyDownCommand;
+
+	public ICommand KeyDownCommand => _keyDownCommand ??= new RelayCommand(OnKeyboardArrow);
 
 	public GameViewModel(
 		IUserDB userDB,
@@ -34,9 +43,10 @@ public class GameViewModel : ViewModel<GameWindow>
 		_userDB = userDB;
 		_messenger = messenger;
         User = user;
+		FieldModel = new FieldModel();
 	}
 
-	private void Any()
+	private void OnKeyboardArrow()
 	{
 
 	}
