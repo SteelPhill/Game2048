@@ -11,10 +11,22 @@
         mc:Ignorable="d"
         Title="{Binding Header, Mode=OneWay}"
         WindowStartupLocation="CenterScreen"
-        Width="250"
-        Height="250"
-        FontSize="10"
+        ResizeMode="NoResize"
+        Width="260"
+        Height="400"
+        FontSize="15"
+        IsTabStop="False"
         d:DataContext="{DynamicResource DemoModel}">
+
+    <b:Interaction.Triggers>
+        <b:EventTrigger EventName="ContentRendered">
+            <b:InvokeCommandAction Command="{Binding ContentRenderedCommand, Mode=OneWay}" />
+        </b:EventTrigger>
+        <b:EventTrigger EventName="KeyDown">
+            <b:InvokeCommandAction Command="{Binding KeyDownCommand, Mode=OneWay}"
+                                   PassEventArgsToCommand="True" />
+        </b:EventTrigger>
+    </b:Interaction.Triggers>
 
     <Window.Resources>
         <local:DemoModel x:Key="DemoModel" />
@@ -23,16 +35,20 @@
                       DataType="{x:Type models:CellModel}">
             <TextBlock Text="{Binding Value, Converter={converters:CellValuesToIntConverter}}"
                        Background="{Binding Value, Converter={converters:CellValuesToBackgroundConverter}}"
-                       Height="40"
+                       TextAlignment="Center"
+                       Height="50"
                        Width="50"
-                       Margin="4" />
+                       Margin="2"
+                       FontSize="20" />
         </DataTemplate>
 
         <DataTemplate x:Key="DataTemplate1">
-            <ItemsControl ItemsSource="{Binding}" ItemTemplate="{StaticResource DataTemplate2}">
+            <ItemsControl IsTabStop="False"
+                          ItemsSource="{Binding}"
+                          ItemTemplate="{StaticResource DataTemplate2}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal"/>
+                        <StackPanel Orientation="Horizontal" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
@@ -40,14 +56,68 @@
     </Window.Resources>
 
     <Grid>
-        <ItemsControl ItemTemplate="{StaticResource DataTemplate1}" 
-              ItemsSource="{Binding FieldModel.Field}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="6*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="0">
+            <TextBlock Margin="5"
+                       Text="Player:" />
+            <TextBlock Margin="5"
+                       Text="{Binding User.Name}" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Margin="5">
+            <TextBlock Margin="5"
+                       Foreground="White"
+                       Background="Gray"
+                       Height="50"
+                       Width="110"
+                       TextAlignment="Center">
+                <Run Text="Score" />
+                <LineBreak />
+                <Run Text="{Binding Score}" />
+            </TextBlock>
+            <TextBlock Margin="5"
+                       Background="Gray"
+                       Foreground="White"
+                       Height="50"
+                       Width="110" 
+                       TextAlignment="Center">
+                <Run Text="High Score" />
+                <LineBreak />
+                <Run Text="{Binding User.HighScore}" />
+            </TextBlock>
+        </StackPanel>
+
+        <ItemsControl Grid.Row="2"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      IsTabStop="False"
+                      Background="Gray"
+                      ItemTemplate="{StaticResource DataTemplate1}" 
+                      ItemsSource="{Binding FieldModel.Field}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <StackPanel Orientation="Vertical"/>
+                    <StackPanel Orientation="Vertical"
+                                Margin="5" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
-    </Grid>
 
+        <Button Grid.Row="3"
+                Margin="5"
+                Background="Gray"
+                Content="Restart"
+                Command="{Binding RestartCommand, Mode=OneWay}" />
+        
+    </Grid>
 </Window>

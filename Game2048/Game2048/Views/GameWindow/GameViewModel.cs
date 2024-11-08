@@ -1,22 +1,27 @@
-﻿using System.Windows.Input;
+﻿using System.Windows;
+using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using Game2048.Base;
 using Game2048.Database;
 using Game2048.Entities;
+using Game2048.Logic;
 using Game2048.Models;
 
 namespace Game2048.Views.GameWindow;
 
 public class GameViewModel : ViewModel<GameWindow>
 {
-	public override object Header => "2048";
+    public override object Header => "2048";
 
     private readonly IUserDB _userDB;
-	private readonly IMessenger _messenger;
+    private readonly IMessenger _messenger;
 
-	private User _user;
+    private User _user;
     private FieldModel _fieldModel;
+    private int _score;
+
+    private Game _game;
 
     public User User
     {
@@ -30,199 +35,93 @@ public class GameViewModel : ViewModel<GameWindow>
         set => Set(ref _fieldModel, value);
     }
 
+    public int Score
+    {
+        get => _score;
+        set => Set(ref _score, value);
+    }
+
+    private ICommand _contentRenderedCommand;
     private ICommand _keyDownCommand;
+    private ICommand _restartCommand;
 
-	public ICommand KeyDownCommand => _keyDownCommand ??= new RelayCommand<KeyEventArgs>(OnKeyboardArrow);
+    public ICommand ContentRenderedCommand => _contentRenderedCommand ??= new RelayCommand(OnContentRendered);
+    public ICommand KeyDownCommand => _keyDownCommand ??= new RelayCommand<KeyEventArgs>(OnKeyboardArrow);
+    public ICommand RestartCommand => _restartCommand ??= new RelayCommand(OnRestart);
 
-	public GameViewModel(
-		IUserDB userDB,
-		IMessenger messenger,
-		User user)
-	{
-		_userDB = userDB;
-		_messenger = messenger;
+    public GameViewModel(
+        IUserDB userDB,
+        IMessenger messenger,
+        User user)
+    {
+        _userDB = userDB;
+        _messenger = messenger;
         User = user;
-		FieldModel = new FieldModel();
-	}
+        FieldModel = new FieldModel();
+        Score = 0;
+        _game = new Game(FieldModel, Score);
+    }
 
-	private void OnKeyboardArrow(KeyEventArgs args)
-	{
+    private void OnContentRendered()
+    {
+        _game.RandomTwoOrFour();
+        _game.RandomTwoOrFour();
+    }
+
+    private void OnKeyboardArrow(KeyEventArgs args)
+    {
         switch (args.Key)
         {
             case Key.Left:
             case Key.A:
-                MoveLeft();
+                _game.MoveLeft();
+                _game.RandomTwoOrFour();
                 break;
             case Key.Up:
             case Key.W:
-                MoveUp();
+                _game.MoveUp();
+                _game.RandomTwoOrFour();
                 break;
             case Key.Right:
             case Key.D:
-                MoveRight();
+                _game.MoveRight();
+                _game.RandomTwoOrFour();
                 break;
             case Key.Down:
             case Key.S:
-                MoveDown();
+                _game.MoveDown();
+                _game.RandomTwoOrFour();
                 break;
             default:
                 break;
         }
-    }
 
-    public void MoveRight()
-    {
-        var length = FieldModel.Field.Count;
-        for (var i = 0; i < length; i++)
+        if (_game.IsWin())
         {
-            var col = length - 1;
+            MessageBox.Show("You win!", "Game over");
+            if (User.HighScore < Score)
+                User.HighScore = Score;
+            RaisePropertyChanged(nameof(User));
+            _game.Restart();
+            return;
+        }
 
-            for (var j = length - 2; j >= 0; j--)
+        if (_game.IsNoFreeSpace())
+        {
+            if (_game.IsNoMoves())
             {
-                if (FieldModel.Field[i][j].IsNone())
-                    continue;
-
-                if (FieldModel.Field[i][col].IsNone())
-                {
-                    FieldModel.Field[i][col].Value = FieldModel.Field[i][j].Value;
-                    if (j != col)
-                        FieldModel.Field[i][j].Value = CellValues.None;
-                }
-                else if (FieldModel.Field[i][col].Value == FieldModel.Field[i][j].Value)
-                {
-                    var newValue = (CellValues)((int)FieldModel.Field[i][col].Value * 2);
-                    FieldModel.Field[i][col].Value = newValue;
-                    FieldModel.Field[i][j].Value = CellValues.None;
-                    col--;
-                }
-                else
-                {
-                    col--;
-                    if (col == j)
-                        continue;
-
-                    FieldModel.Field[i][col].Value = FieldModel.Field[i][j].Value;
-                    FieldModel.Field[i][j].Value = CellValues.None;
-                }
+                MessageBox.Show("You lose!", "Game over");
+                if (User.HighScore < Score)
+                    User.HighScore = Score;
+                RaisePropertyChanged(nameof(User));
+                _game.Restart();
             }
         }
     }
 
-    public void MoveDown()
+    private void OnRestart()
     {
-        var length = FieldModel.Field.Count;
-
-        for (var j = 0; j < length; j++)
-        {
-            var row = length - 1;
-
-            for (var i = length - 2; i >= 0; i--)
-            {
-                if (FieldModel.Field[i][j].IsNone())
-                    continue;
-
-                if (FieldModel.Field[row][j].IsNone())
-                {
-                    FieldModel.Field[row][j].Value = FieldModel.Field[i][j].Value;
-                    if (i != row)
-                        FieldModel.Field[i][j].Value = CellValues.None;
-                }
-                else if (FieldModel.Field[row][j].Value == FieldModel.Field[i][j].Value)
-                {
-                    var newValue = (CellValues)((int)FieldModel.Field[row][j].Value * 2);
-                    FieldModel.Field[row][j].Value = newValue;
-                    FieldModel.Field[i][j].Value = CellValues.None;
-                    row--;
-                }
-                else
-                {
-                    row--;
-                    if (row == i)
-                        continue;
-
-                    FieldModel.Field[row][j].Value = FieldModel.Field[i][j].Value;
-                    FieldModel.Field[i][j].Value = CellValues.None;
-                }
-            }
-        }
-    }
-
-    public void MoveLeft()
-    {
-        var length = FieldModel.Field.Count;
-
-        for (var i = 0; i < length; i++)
-        {
-            var col = 0;
-
-            for (var j = 1; j < length; j++)
-            {
-                if (FieldModel.Field[i][j].IsNone())
-                    continue;
-
-                if (FieldModel.Field[i][col].IsNone())
-                {
-                    FieldModel.Field[i][col].Value = FieldModel.Field[i][j].Value;
-                    if (j != col)
-                        FieldModel.Field[i][j].Value = CellValues.None;
-                }
-                else if (FieldModel.Field[i][col].Value == FieldModel.Field[i][j].Value)
-                {
-                    var newValue = (CellValues)((int)FieldModel.Field[i][col].Value * 2);
-                    FieldModel.Field[i][col].Value = newValue;
-                    FieldModel.Field[i][j].Value = CellValues.None;
-                    col++;
-                }
-                else
-                {
-                    col++;
-                    if (col == j)
-                        continue;
-
-                    FieldModel.Field[i][col].Value = FieldModel.Field[i][j].Value;
-                    FieldModel.Field[i][j].Value = CellValues.None;
-                }
-            }
-        }
-    }
-
-    public void MoveUp()
-    {
-        var length = FieldModel.Field.Count;
-
-        for (var j = 0; j < length; j++)
-        {
-            var row = 0;
-
-            for (var i = 1; i < length; i++)
-            {
-                if (FieldModel.Field[i][j].IsNone())
-                    continue;
-
-                if (FieldModel.Field[row][j].IsNone())
-                {
-                    FieldModel.Field[row][j].Value = FieldModel.Field[i][j].Value;
-                    if (i != row)
-                        FieldModel.Field[i][j].Value = CellValues.None;
-                }
-                else if (FieldModel.Field[row][j].Value == FieldModel.Field[i][j].Value)
-                {
-                    var newValue = (CellValues)((int)FieldModel.Field[row][j].Value * 2);
-                    FieldModel.Field[row][j].Value = newValue;
-                    FieldModel.Field[i][j].Value = CellValues.None;
-                    row++;
-                }
-                else
-                {
-                    row++;
-                    if (row == i)
-                        continue;
-
-                    FieldModel.Field[row][j].Value = FieldModel.Field[i][j].Value;
-                    FieldModel.Field[i][j].Value = CellValues.None;
-                }
-            }
-        }
+        _game.Restart();
     }
 
     public interface IFactory

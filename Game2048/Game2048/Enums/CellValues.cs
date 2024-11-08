@@ -2,7 +2,7 @@
 
 public enum CellValues
 {
-    None = 0,
+    Empty = 0,
     Two = 2,
     Four = 4,
     Eight = 8,

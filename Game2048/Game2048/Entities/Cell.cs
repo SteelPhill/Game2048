@@ -6,6 +6,6 @@ public class Cell
 
     public Cell()
     {
-        Value = CellValues.None;
+        Value = CellValues.Empty;
     }
 }

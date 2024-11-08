@@ -1,10 +1,9 @@
 ﻿using Game2048.Entities;
 using GalaSoft.MvvmLight;
-using System;
 
 namespace Game2048.Models;
 
-public class CellModel : ObservableObject, ICloneable
+public class CellModel : ObservableObject
 {
     private CellValues _value;
 
@@ -14,14 +13,13 @@ public class CellModel : ObservableObject, ICloneable
         set => Set(ref _value, value);
     }
 
-    public bool IsNone()
+    public CellModel(CellValues value)
     {
-        return Value == CellValues.None;
+        Value = value;
     }
 
-    public object Clone()
+    public bool IsEmpty()
     {
-        var clone = (CellModel)MemberwiseClone();
-        return clone;
+        return Value == CellValues.Empty;
     }
 }

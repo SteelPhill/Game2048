@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using Game2048.Entities;
+using System.Collections.ObjectModel;
 
 namespace Game2048.Models;
 
@@ -15,14 +16,21 @@ public class FieldModel
     {
         Field = new ObservableCollection<ObservableCollection<CellModel>>();
 
-        for (var i = 0; i < Constants.FieldSize; i++)
+        for (var i = 0; i < Constants.FieldSideSize; i++)
         {
             var row = new ObservableCollection<CellModel>();
 
-            for (var j = 0; j < Constants.FieldSize; j++)
-                row.Add(new CellModel());
+            for (var j = 0; j < Constants.FieldSideSize; j++)
+                row.Add(new CellModel(CellValues.Empty));
 
             Field.Add(row);
         }
+    }
+
+    public void Clear()
+    {
+        foreach (var row in Field)
+            foreach (var cell in row)
+                cell.Value = CellValues.Empty;
     }
 }
