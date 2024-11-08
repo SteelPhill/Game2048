@@ -67,13 +67,14 @@ public class AuthorizationViewModel : ViewModel<AuthorizationWindow>
         if (Login == string.Empty)
             return;
 
-        _currentUser.IsRememberMe = false;
+        if (_currentUser != null)
+            _currentUser.IsRememberMe = false;
 
-        var oldUser = _userDB.Users.Find(u => u.Name == Login);
+        var user = _userDB.Users.Find(u => u.Name == Login);
 
-        if (oldUser != null)
+        if (user != null)
         {
-            _currentUser = oldUser;
+            _currentUser = user;
         }
         else
         {

@@ -1,28 +1,35 @@
 ﻿<Window x:Class="Game2048.Views.GameWindow.GameWindow"
-		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-		xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-		xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:local="clr-namespace:Game2048.Views.GameWindow"
-		mc:Ignorable="d"
-		Title="{Binding Header, Mode=OneWay}"
-		WindowStartupLocation="CenterScreen"
-		Width="250"
-		Height="250"
-		FontSize="10"
-		d:DataContext="{DynamicResource DemoModel}">
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Game2048.Views.GameWindow"
+        xmlns:models="clr-namespace:Game2048.Models"
+        xmlns:converters="clr-namespace:Game2048.Converters"
+        mc:Ignorable="d"
+        Title="{Binding Header, Mode=OneWay}"
+        WindowStartupLocation="CenterScreen"
+        Width="250"
+        Height="250"
+        FontSize="10"
+        d:DataContext="{DynamicResource DemoModel}">
 
     <Window.Resources>
         <local:DemoModel x:Key="DemoModel" />
 
-        <DataTemplate x:Key="DataTemplate_Level2">
-            <Button Content="{Binding}" Height="40" Width="50" Margin="4"/>
+        <DataTemplate x:Key="DataTemplate2"
+                      DataType="{x:Type models:CellModel}">
+            <TextBlock Text="{Binding Value, Converter={converters:CellValuesToIntConverter}}"
+                       Background="{Binding Value, Converter={converters:CellValuesToBackgroundConverter}}"
+                       Height="40"
+                       Width="50"
+                       Margin="4" />
         </DataTemplate>
 
-        <DataTemplate x:Key="DataTemplate_Level1">
-            <ItemsControl ItemsSource="{Binding}" ItemTemplate="{DynamicResource DataTemplate_Level2}">
+        <DataTemplate x:Key="DataTemplate1">
+            <ItemsControl ItemsSource="{Binding}" ItemTemplate="{StaticResource DataTemplate2}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal"/>
@@ -33,8 +40,14 @@
     </Window.Resources>
 
     <Grid>
-        <ItemsControl ItemTemplate="{DynamicResource DataTemplate_Level1}" 
-				  ItemsSource="{Binding FieldModel.Field}"/>
+        <ItemsControl ItemTemplate="{StaticResource DataTemplate1}" 
+              ItemsSource="{Binding FieldModel.Field}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
     </Grid>
 
 </Window>

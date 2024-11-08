@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using Game2048.Base;
@@ -33,7 +32,7 @@ public class GameViewModel : ViewModel<GameWindow>
 
     private ICommand _keyDownCommand;
 
-	public ICommand KeyDownCommand => _keyDownCommand ??= new RelayCommand(OnKeyboardArrow);
+	public ICommand KeyDownCommand => _keyDownCommand ??= new RelayCommand<KeyEventArgs>(OnKeyboardArrow);
 
 	public GameViewModel(
 		IUserDB userDB,
@@ -46,10 +45,185 @@ public class GameViewModel : ViewModel<GameWindow>
 		FieldModel = new FieldModel();
 	}
 
-	private void OnKeyboardArrow()
+	private void OnKeyboardArrow(KeyEventArgs args)
 	{
+        switch (args.Key)
+        {
+            case Key.Left:
+            case Key.A:
+                MoveLeft();
+                break;
+            case Key.Up:
+            case Key.W:
+                MoveUp();
+                break;
+            case Key.Right:
+            case Key.D:
+                MoveRight();
+                break;
+            case Key.Down:
+            case Key.S:
+                MoveDown();
+                break;
+            default:
+                break;
+        }
+    }
 
-	}
+    public void MoveRight()
+    {
+        var length = FieldModel.Field.Count;
+        for (var i = 0; i < length; i++)
+        {
+            var col = length - 1;
+
+            for (var j = length - 2; j >= 0; j--)
+            {
+                if (FieldModel.Field[i][j].IsNone())
+                    continue;
+
+                if (FieldModel.Field[i][col].IsNone())
+                {
+                    FieldModel.Field[i][col].Value = FieldModel.Field[i][j].Value;
+                    if (j != col)
+                        FieldModel.Field[i][j].Value = CellValues.None;
+                }
+                else if (FieldModel.Field[i][col].Value == FieldModel.Field[i][j].Value)
+                {
+                    var newValue = (CellValues)((int)FieldModel.Field[i][col].Value * 2);
+                    FieldModel.Field[i][col].Value = newValue;
+                    FieldModel.Field[i][j].Value = CellValues.None;
+                    col--;
+                }
+                else
+                {
+                    col--;
+                    if (col == j)
+                        continue;
+
+                    FieldModel.Field[i][col].Value = FieldModel.Field[i][j].Value;
+                    FieldModel.Field[i][j].Value = CellValues.None;
+                }
+            }
+        }
+    }
+
+    public void MoveDown()
+    {
+        var length = FieldModel.Field.Count;
+
+        for (var j = 0; j < length; j++)
+        {
+            var row = length - 1;
+
+            for (var i = length - 2; i >= 0; i--)
+            {
+                if (FieldModel.Field[i][j].IsNone())
+                    continue;
+
+                if (FieldModel.Field[row][j].IsNone())
+                {
+                    FieldModel.Field[row][j].Value = FieldModel.Field[i][j].Value;
+                    if (i != row)
+                        FieldModel.Field[i][j].Value = CellValues.None;
+                }
+                else if (FieldModel.Field[row][j].Value == FieldModel.Field[i][j].Value)
+                {
+                    var newValue = (CellValues)((int)FieldModel.Field[row][j].Value * 2);
+                    FieldModel.Field[row][j].Value = newValue;
+                    FieldModel.Field[i][j].Value = CellValues.None;
+                    row--;
+                }
+                else
+                {
+                    row--;
+                    if (row == i)
+                        continue;
+
+                    FieldModel.Field[row][j].Value = FieldModel.Field[i][j].Value;
+                    FieldModel.Field[i][j].Value = CellValues.None;
+                }
+            }
+        }
+    }
+
+    public void MoveLeft()
+    {
+        var length = FieldModel.Field.Count;
+
+        for (var i = 0; i < length; i++)
+        {
+            var col = 0;
+
+            for (var j = 1; j < length; j++)
+            {
+                if (FieldModel.Field[i][j].IsNone())
+                    continue;
+
+                if (FieldModel.Field[i][col].IsNone())
+                {
+                    FieldModel.Field[i][col].Value = FieldModel.Field[i][j].Value;
+                    if (j != col)
+                        FieldModel.Field[i][j].Value = CellValues.None;
+                }
+                else if (FieldModel.Field[i][col].Value == FieldModel.Field[i][j].Value)
+                {
+                    var newValue = (CellValues)((int)FieldModel.Field[i][col].Value * 2);
+                    FieldModel.Field[i][col].Value = newValue;
+                    FieldModel.Field[i][j].Value = CellValues.None;
+                    col++;
+                }
+                else
+                {
+                    col++;
+                    if (col == j)
+                        continue;
+
+                    FieldModel.Field[i][col].Value = FieldModel.Field[i][j].Value;
+                    FieldModel.Field[i][j].Value = CellValues.None;
+                }
+            }
+        }
+    }
+
+    public void MoveUp()
+    {
+        var length = FieldModel.Field.Count;
+
+        for (var j = 0; j < length; j++)
+        {
+            var row = 0;
+
+            for (var i = 1; i < length; i++)
+            {
+                if (FieldModel.Field[i][j].IsNone())
+                    continue;
+
+                if (FieldModel.Field[row][j].IsNone())
+                {
+                    FieldModel.Field[row][j].Value = FieldModel.Field[i][j].Value;
+                    if (i != row)
+                        FieldModel.Field[i][j].Value = CellValues.None;
+                }
+                else if (FieldModel.Field[row][j].Value == FieldModel.Field[i][j].Value)
+                {
+                    var newValue = (CellValues)((int)FieldModel.Field[row][j].Value * 2);
+                    FieldModel.Field[row][j].Value = newValue;
+                    FieldModel.Field[i][j].Value = CellValues.None;
+                    row++;
+                }
+                else
+                {
+                    row++;
+                    if (row == i)
+                        continue;
+
+                    FieldModel.Field[row][j].Value = FieldModel.Field[i][j].Value;
+                    FieldModel.Field[i][j].Value = CellValues.None;
+                }
+            }
+        }
+    }
 
     public interface IFactory
     {

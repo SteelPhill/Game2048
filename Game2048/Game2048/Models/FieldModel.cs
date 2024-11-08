@@ -1,11 +1,10 @@
-﻿using Game2048.Entities;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 
 namespace Game2048.Models;
 
 public class FieldModel
 {
-    public ObservableCollection<ObservableCollection<Cell>> Field { get; set; }
+    public ObservableCollection<ObservableCollection<CellModel>> Field { get; set; }
 
     public FieldModel()
     {
@@ -14,14 +13,14 @@ public class FieldModel
 
     private void Initialize()
     {
-        Field = new ObservableCollection<ObservableCollection<Cell>>();
+        Field = new ObservableCollection<ObservableCollection<CellModel>>();
 
         for (var i = 0; i < Constants.FieldSize; i++)
         {
-            var row = new ObservableCollection<Cell>();
+            var row = new ObservableCollection<CellModel>();
 
             for (var j = 0; j < Constants.FieldSize; j++)
-                row.Add(new Cell(new Coordinates(i, j)));
+                row.Add(new CellModel());
 
             Field.Add(row);
         }

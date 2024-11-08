@@ -1,6 +1,6 @@
 ﻿namespace Game2048.Entities;
 
-public enum Direction
+public enum Directions
 {
     Left,
     Right,
