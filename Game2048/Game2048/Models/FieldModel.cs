@@ -5,16 +5,11 @@ namespace Game2048.Models;
 
 public class FieldModel
 {
-    public ObservableCollection<ObservableCollection<CellModel>> Field { get; set; }
+    public ObservableCollection<ObservableCollection<CellModel>> Field { get; }
 
     public FieldModel()
     {
-        Initialize();
-    }
-
-    private void Initialize()
-    {
-        Field = new ObservableCollection<ObservableCollection<CellModel>>();
+        Field = [];
 
         for (var i = 0; i < Constants.FieldSideSize; i++)
         {

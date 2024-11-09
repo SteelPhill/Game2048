@@ -13,7 +13,7 @@ public class AuthorizationViewModel : ViewModel<AuthorizationWindow>
 {
 	public override object Header => "Authentication";
 
-    private User _currentUser;
+    private User _user;
     private string _login;
     private bool _isRememberMe;
 
@@ -53,42 +53,50 @@ public class AuthorizationViewModel : ViewModel<AuthorizationWindow>
 
     private void OnContentRendered()
     {
-        _currentUser = _userDB.Users.Find(u => u.IsRememberMe);
+        _user = _userDB.Users.Find(u => u.IsRememberMe);
 
-        if (_currentUser == null)
+        if (_user == null)
             return;
 
-        Login = _currentUser.Name;
-        IsRememberMe = _currentUser.IsRememberMe;
+        Login = _user.Name;
+        IsRememberMe = _user.IsRememberMe;
     }
 
     private void OnLogIn()
     {
-        if (Login == string.Empty)
+        if (string.IsNullOrWhiteSpace(Login))
             return;
 
-        if (_currentUser != null)
-            _currentUser.IsRememberMe = false;
+        if (_user != null)
+            _user.IsRememberMe = false;
 
         var user = _userDB.Users.Find(u => u.Name == Login);
 
         if (user != null)
         {
-            _currentUser = user;
+            _user = user;
         }
         else
         {
-            _currentUser = new User(Login);
-            _userDB.Add(_currentUser);
+            _user = new User(Login);
+            _userDB.Add(_user);
         }
 
-        _currentUser.IsRememberMe = IsRememberMe;
-        _gameWindowProvider.Show(_currentUser);
+        _user.IsRememberMe = IsRememberMe;
+        _gameWindowProvider.Show(_user);
         _messenger.Send(new RequestCloseMessage(this, null));
     }
 
     private void OnCancel()
     {
         _messenger.Send(new RequestCloseMessage(this, null));
+        Cleanup();
+    }
+
+    public override void Cleanup()
+    {
+        base.Cleanup();
+
+        _messenger.Unregister(this);
     }
 }

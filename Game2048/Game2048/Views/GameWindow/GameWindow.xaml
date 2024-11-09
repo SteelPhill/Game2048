@@ -35,6 +35,7 @@
                       DataType="{x:Type models:CellModel}">
             <TextBlock Text="{Binding Value, Converter={converters:CellValuesToIntConverter}}"
                        Background="{Binding Value, Converter={converters:CellValuesToBackgroundConverter}}"
+                       Foreground="{Binding Value, Converter={converters:CellValuesToForegroundConverter}}"
                        TextAlignment="Center"
                        Height="50"
                        Width="50"
@@ -68,7 +69,7 @@
             <TextBlock Margin="5"
                        Text="Player:" />
             <TextBlock Margin="5"
-                       Text="{Binding User.Name}" />
+                       Text="{Binding UserModel.Name}" />
         </StackPanel>
 
         <StackPanel Orientation="Horizontal"
@@ -94,7 +95,7 @@
                        TextAlignment="Center">
                 <Run Text="High Score" />
                 <LineBreak />
-                <Run Text="{Binding User.HighScore}" />
+                <Run Text="{Binding UserModel.HighScore}" />
             </TextBlock>
         </StackPanel>
 
@@ -116,6 +117,7 @@
         <Button Grid.Row="3"
                 Margin="5"
                 Background="Gray"
+                Foreground="White"
                 Content="Restart"
                 Command="{Binding RestartCommand, Mode=OneWay}" />
         

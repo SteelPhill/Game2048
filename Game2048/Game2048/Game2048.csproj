@@ -92,6 +92,7 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="Converters\CellValuesToBackgroundConverter.cs" />
+    <Compile Include="Converters\CellValuesToForegroundConverter.cs" />
     <Compile Include="Converters\CellValuesToIntConverter.cs" />
     <Compile Include="Database\IUserDB.cs" />
     <Compile Include="Database\UserDB.cs" />

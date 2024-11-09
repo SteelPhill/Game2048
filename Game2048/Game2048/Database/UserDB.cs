@@ -1,5 +1,6 @@
 ﻿using Game2048.Entities;
 using Game2048.Helpers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -7,8 +8,6 @@ namespace Game2048.Database;
 
 public class UserDB : IUserDB
 {
-    private const string UsersFileName = "Users.xml";
-
     public List<User> Users { get; private set; }
 
     public void Add(User user)
@@ -18,11 +17,17 @@ public class UserDB : IUserDB
 
     public void Read()
     {
-        Users = XmlSerializerHelper.Deserializing<List<User>>(File.ReadAllText(UsersFileName));
+        if (File.Exists(Constants.UsersFilePath))
+            Users = XmlSerializerHelper.Deserializing<List<User>>(File.ReadAllText(Constants.UsersFileName));
+        else
+        {
+            Users = new List<User>();
+            File.Create(Constants.UsersFilePath);
+        }
     }
 
     public void Write()
     {
-        File.WriteAllText(UsersFileName, XmlSerializerHelper.Serializing(Users));
+        File.WriteAllText(Constants.UsersFileName, XmlSerializerHelper.Serializing(Users));
     }
 }
