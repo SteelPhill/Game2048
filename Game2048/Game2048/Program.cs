@@ -1,7 +1,4 @@
-﻿using Game2048.Database;
-using Game2048.Entities;
-using System;
-using System.Collections.Generic;
+﻿using System;
 
 namespace Game2048;
 

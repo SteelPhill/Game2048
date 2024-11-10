@@ -11,6 +11,7 @@
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
 		Width="350"
+        Height="100"
         SizeToContent="Height"
         Background="Black"
         Foreground="White"
@@ -29,13 +30,13 @@
     
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="1.5*"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="1.5*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Row="0"
@@ -43,17 +44,19 @@
                    Margin="3"
                    VerticalAlignment="Center"
                    TextAlignment="Right"
-                   Text="Username: "/>
+                   Text="Username:" />
 
         <TextBox Grid.Row="0"
                  Grid.Column="1"
                  Grid.ColumnSpan="3"
+
                  Margin="3"
                  BorderBrush="Silver"
-                 Text="{Binding Path=Login, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                 Text="{Binding Path=Login, Mode=TwoWay}">
             <TextBox.Resources>
                 <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="3"/>
+                    <Setter Property="CornerRadius"
+                            Value="3" />
                 </Style>
             </TextBox.Resources>
         </TextBox>
@@ -66,7 +69,7 @@
                   Margin="3"
                   BorderBrush="Silver"
                   Foreground="White"
-                  IsChecked="{Binding IsRememberMe, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                  IsChecked="{Binding IsRememberMe, Mode=TwoWay}" />
 
         <StackPanel Orientation="Horizontal"
                     Grid.Row="2"
@@ -82,7 +85,8 @@
                     Command="{Binding LogInCommand, Mode=OneWay}">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="10"/>
+                        <Setter Property="CornerRadius"
+                                Value="10" />
                     </Style>
                 </Button.Resources>
             </Button>
@@ -95,7 +99,8 @@
                     Command="{Binding CancelCommand, Mode=OneWay}">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="10"/>
+                        <Setter Property="CornerRadius"
+                                Value="10" />
                     </Style>
                 </Button.Resources>
             </Button>

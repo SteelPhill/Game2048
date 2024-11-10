@@ -96,7 +96,6 @@
     <Compile Include="Converters\CellValuesToIntConverter.cs" />
     <Compile Include="Database\IUserDB.cs" />
     <Compile Include="Database\UserDB.cs" />
-    <Compile Include="Entities\Cell.cs" />
     <Compile Include="Entities\Coordinates.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Enums\CellValues.cs" />

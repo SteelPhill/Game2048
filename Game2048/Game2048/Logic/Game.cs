@@ -12,6 +12,10 @@ public class Game
     public Game(FieldModel fieldModel)
     {
         _fieldModel = fieldModel;
+
+        for (var i = 0; i < Constants.InitialNonEmptyCellsNumber; i++)
+            InsertTwoOrFour();
+
         Score = 0;
     }
 
@@ -36,14 +40,14 @@ public class Game
     {
         Score = 0;
         _fieldModel.Clear();
-        InsertTwoOrFour();
-        InsertTwoOrFour();
+
+        for (var i = 0; i < Constants.InitialNonEmptyCellsNumber; i++)
+            InsertTwoOrFour();
     }
 
     public void InsertTwoOrFour()
     {
         var position = GetEmptyCoordinates();
-
         _fieldModel.Field[position.Row][position.Column].Value = GetTwoOrFour();
     }
 

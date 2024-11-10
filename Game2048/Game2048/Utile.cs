@@ -7,36 +7,20 @@ namespace Game2048;
 
 public static class Utile
 {
-    public static readonly Dictionary<CellValues, Brush> StateValueBackgroundColor = new()
+    public static readonly Dictionary<CellValues, (Brush Background, Brush Foreground)> StateValueColor = new()
     {
-         { CellValues.Empty, Brushes.LightGray },
-         { CellValues.Two, Brushes.White },
-         { CellValues.Four, Brushes.White },
-         { CellValues.Eight, Brushes.Orange },
-         { CellValues.Sixteen, Brushes.OrangeRed },
-         { CellValues.ThirtyTwo, Brushes.Red },
-         { CellValues.SixtyFour, Brushes.Yellow },
-         { CellValues.OneHundredTwentyEight, Brushes.SkyBlue },
-         { CellValues.TwoHundredFiftySix, Brushes.DeepSkyBlue },
-         { CellValues.FiveHundredTwelve, Brushes.Blue },
-         { CellValues.OneThousandTwentyFour, Brushes.BlueViolet },
-         { CellValues.TwoThousandFortyEight, Brushes.Green },
-    };
-
-    public static readonly Dictionary<CellValues, Brush> StateValueForegroundColor = new()
-    {
-         { CellValues.Empty, Brushes.Black },
-         { CellValues.Two, Brushes.Black },
-         { CellValues.Four, Brushes.Black },
-         { CellValues.Eight, Brushes.White },
-         { CellValues.Sixteen, Brushes.White },
-         { CellValues.ThirtyTwo, Brushes.White },
-         { CellValues.SixtyFour, Brushes.Black },
-         { CellValues.OneHundredTwentyEight, Brushes.Black },
-         { CellValues.TwoHundredFiftySix, Brushes.White },
-         { CellValues.FiveHundredTwelve, Brushes.White },
-         { CellValues.OneThousandTwentyFour, Brushes.White },
-         { CellValues.TwoThousandFortyEight, Brushes.White },
+         { CellValues.Empty, (Brushes.LightGray, Brushes.LightGray) },
+         { CellValues.Two, (Brushes.White, Brushes.Black) },
+         { CellValues.Four, (Brushes.Cornsilk, Brushes.Black) },
+         { CellValues.Eight, (Brushes.Orange, Brushes.White) },
+         { CellValues.Sixteen, (Brushes.Coral, Brushes.White) },
+         { CellValues.ThirtyTwo, (Brushes.Tomato, Brushes.White) },
+         { CellValues.SixtyFour, (Brushes.Red, Brushes.White) },
+         { CellValues.OneHundredTwentyEight, (new SolidColorBrush(Color.FromRgb(230,230,80)), Brushes.White) },
+         { CellValues.TwoHundredFiftySix, (new SolidColorBrush(Color.FromRgb(230,230,60)), Brushes.White) },
+         { CellValues.FiveHundredTwelve, (new SolidColorBrush(Color.FromRgb(230,230,40)), Brushes.White) },
+         { CellValues.OneThousandTwentyFour, (new SolidColorBrush(Color.FromRgb(230,230,20)), Brushes.White) },
+         { CellValues.TwoThousandFortyEight, (new SolidColorBrush(Color.FromRgb(230,230,0)), Brushes.White) }
     };
 
     public static readonly Random Random = new();

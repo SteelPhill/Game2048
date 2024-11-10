@@ -60,22 +60,20 @@ public class GameViewModel : ViewModel<GameWindow>
         _userDB = userDB;
         _messenger = messenger;
         _user = user;
-        Score = 0;
-
-        FieldModel = new FieldModel();
-        _game = new Game(FieldModel);
 
         UserModel = new UserModel();
+        FieldModel = new FieldModel();
+
+        Score = 0;
     }
 
     private void OnContentRendered()
     {
-        _game.InsertTwoOrFour();
-        _game.InsertTwoOrFour();
-
         UserModel.Name = _user.Name;
         UserModel.HighScore = _user.HighScore;
         UserModel.IsRememberMe = _user.IsRememberMe;
+
+        _game = new Game(FieldModel);
     }
 
     private void OnKeyboardArrow(KeyEventArgs e)
@@ -107,12 +105,11 @@ public class GameViewModel : ViewModel<GameWindow>
     {
         if (action())
         {
+            Score = _game.Score;
+
             if (_game.IsWin())
             {
-                MessageBox.Show("You win!", "Game over");
-                if (UserModel.HighScore < Score)
-                    UserModel.HighScore = Score;
-                _game.Restart();
+                GameOver("You win!");
                 return;
             }
 
@@ -120,20 +117,23 @@ public class GameViewModel : ViewModel<GameWindow>
                 _game.InsertTwoOrFour();
 
             if (_game.IsNoFreeSpace() && _game.IsNoMoves())
-            {
-                MessageBox.Show("You lose!", "Game over");
-                if (UserModel.HighScore < Score)
-                    UserModel.HighScore = Score;
-                _game.Restart();
-            }
+                GameOver("You lose!");
         }
+    }
 
-        Score = _game.Score;
+    private void GameOver(string message)
+    {
+        MessageBox.Show(message, "Game over");
+        if (UserModel.HighScore < Score)
+            UserModel.HighScore = Score;
+        Score = 0;
+        _game.Restart();
     }
 
     private void OnRestart()
     {
         _game.Restart();
+        Score = 0;
     }
 
     public override void Cleanup()
