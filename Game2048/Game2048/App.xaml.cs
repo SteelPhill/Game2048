@@ -1,5 +1,6 @@
 ﻿using Game2048.Database;
 using Game2048.Views.MainWindow.Logic;
+using System;
 using System.Windows;
 
 namespace Game2048;
@@ -23,9 +24,17 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
-        _userDB.Read();
+        try
+        {
+            _userDB.Read();
+        }
+        catch (InvalidOperationException)
+        {
+            MessageBox.Show(Constants.FileReadingError, "Error");
+            Environment.Exit(0);
+        }
 
-        _authorizationWindowProvider.Show();
+_authorizationWindowProvider.Show();
     }
 
     protected override void OnExit(ExitEventArgs e)

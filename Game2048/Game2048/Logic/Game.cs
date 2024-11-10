@@ -1,13 +1,14 @@
 ﻿using Game2048.Entities;
 using Game2048.Models;
 using System.Linq;
+
 namespace Game2048.Logic;
 
 public class Game
 {
-    private FieldModel _fieldModel;
+    private readonly FieldModel _fieldModel;
 
-    public int Score { get; set; }
+    public int Score { get; private set; }
 
     public Game(FieldModel fieldModel)
     {
@@ -74,7 +75,7 @@ public class Game
 
     public bool TryMoveRight()
     {
-        bool isMove = false;
+        var isMove = false;
 
         for (var i = 0; i < Constants.FieldSideSize; i++)
         {
@@ -119,7 +120,7 @@ public class Game
 
     public bool TryMoveDown()
     {
-        bool isMove = false;
+        var isMove = false;
 
         for (var j = 0; j < Constants.FieldSideSize; j++)
         {
@@ -163,7 +164,7 @@ public class Game
 
     public bool TryMoveLeft()
     {
-        bool isMove = false;
+        var isMove = false;
 
         for (var i = 0; i < Constants.FieldSideSize; i++)
         {
@@ -208,7 +209,7 @@ public class Game
 
     public bool TryMoveUp()
     {
-        bool isMove = false;
+        var isMove = false;
 
         for (var j = 0; j < Constants.FieldSideSize; j++)
         {

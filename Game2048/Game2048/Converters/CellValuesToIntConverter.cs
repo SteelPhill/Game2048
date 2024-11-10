@@ -9,11 +9,13 @@ public class CellValuesToIntConverter : MarkupConverter
 {
     protected override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is not CellValues v)
-            return default;
+        if (value is not CellValues cellValues)
+            throw new Exception("Argument value is not CellValues");
 
-        switch (v)
+        switch (cellValues)
         {
+            case CellValues.Empty:
+                return 0;
             case CellValues.Two:
                 return 2;
             case CellValues.Four:
@@ -37,7 +39,7 @@ public class CellValuesToIntConverter : MarkupConverter
             case CellValues.TwoThousandFortyEight:
                 return 2048;
             default:
-                return default;
+                throw new Exception("Invalid CellValues");
         }
     }
 

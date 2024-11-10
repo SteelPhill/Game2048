@@ -25,13 +25,4 @@ public class UserModel : ObservableObject
         get => _isRememberMe;
         set => Set(ref _isRememberMe, value);
     }
-
-    public UserModel() : this(string.Empty) { }
-
-    public UserModel(string name)
-    {
-        Name = name;
-        HighScore = 0;
-        IsRememberMe = false;
-    }
 }

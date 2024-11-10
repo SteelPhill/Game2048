@@ -7,11 +7,10 @@
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:Game2048.Views.AuthorizationWindow"
         mc:Ignorable="d"
-		Title="{Binding Header, Mode=OneWay}"
         WindowStartupLocation="CenterScreen"
+		Title="{Binding Header, Mode=OneWay}"
         ResizeMode="NoResize"
 		Width="350"
-        Height="100"
         SizeToContent="Height"
         Background="Black"
         Foreground="White"
@@ -49,7 +48,6 @@
         <TextBox Grid.Row="0"
                  Grid.Column="1"
                  Grid.ColumnSpan="3"
-
                  Margin="3"
                  BorderBrush="Silver"
                  Text="{Binding Path=Login, Mode=TwoWay}">
@@ -63,24 +61,32 @@
 
         <CheckBox Grid.Row="1"
                   Grid.Column="1"
-                  Content="Remember Me"
+                  Margin="3"
                   HorizontalAlignment="Left"
                   VerticalContentAlignment="Center"
-                  Margin="3"
                   BorderBrush="Silver"
                   Foreground="White"
-                  IsChecked="{Binding IsRememberMe, Mode=TwoWay}" />
+                  Content="Remember Me"
+                  IsChecked="{Binding IsRememberMe, Mode=TwoWay}">
+            <CheckBox.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius"
+                            Value="3" />
+                </Style>
+            </CheckBox.Resources>
+        </CheckBox>
 
-        <StackPanel Orientation="Horizontal"
-                    Grid.Row="2"
+        <StackPanel Grid.Row="2"
                     Grid.Column="1"
                     Grid.ColumnSpan="3"
-                    Margin="3">
+                    Margin="3"
+                    Orientation="Horizontal">
+            
             <Button Margin="3"
                     Width="70"
+                    BorderBrush="Silver"
                     Background="Green"
                     Foreground="White"
-                    BorderBrush="Silver"
                     Content="Log In"
                     Command="{Binding LogInCommand, Mode=OneWay}">
                 <Button.Resources>
@@ -90,11 +96,12 @@
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button Margin="2"
+            
+            <Button Margin="3"
                     Width="70"
+                    BorderBrush="Silver"
                     Background="Red"
                     Foreground="White"
-                    BorderBrush="Silver"
                     Content="Cancel"
                     Command="{Binding CancelCommand, Mode=OneWay}">
                 <Button.Resources>
@@ -104,7 +111,7 @@
                     </Style>
                 </Button.Resources>
             </Button>
+            
         </StackPanel>
-
     </Grid>
 </Window>

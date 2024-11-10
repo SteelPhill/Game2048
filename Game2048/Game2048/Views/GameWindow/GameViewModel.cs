@@ -4,7 +4,6 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using Game2048.Base;
-using Game2048.Database;
 using Game2048.Entities;
 using Game2048.Logic;
 using Game2048.Messages;
@@ -16,10 +15,9 @@ public class GameViewModel : ViewModel<GameWindow>
 {
     public override object Header => "2048";
 
-    private readonly IUserDB _userDB;
     private readonly IMessenger _messenger;
+    private readonly User _user;
 
-    private User _user;
     private Game _game;
 
     private UserModel _userModel;
@@ -52,12 +50,8 @@ public class GameViewModel : ViewModel<GameWindow>
     public ICommand KeyDownCommand => _keyDownCommand ??= new RelayCommand<KeyEventArgs>(OnKeyboardArrow);
     public ICommand RestartCommand => _restartCommand ??= new RelayCommand(OnRestart);
 
-    public GameViewModel(
-        IUserDB userDB,
-        IMessenger messenger,
-        User user)
+    public GameViewModel(IMessenger messenger, User user)
     {
-        _userDB = userDB;
         _messenger = messenger;
         _user = user;
 

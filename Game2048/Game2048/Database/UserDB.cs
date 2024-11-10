@@ -18,7 +18,7 @@ public class UserDB : IUserDB
     {
         if (!File.Exists(Constants.UsersFilePath))
         {
-            Users = new List<User>();
+            Users = [];
             File.Create(Constants.UsersFilePath);
             return;
         }

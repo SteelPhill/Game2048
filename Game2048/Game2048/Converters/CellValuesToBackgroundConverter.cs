@@ -9,10 +9,10 @@ public class CellValuesToBackgroundConverter : MarkupConverter
 {
     protected override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is not CellValues v)
+        if (value is not CellValues cellValues)
             throw new Exception("Argument value is not CellValues");
 
-        switch (v)
+        switch (cellValues)
         {
             case CellValues.Empty:
                 return Utile.StateValueColor[CellValues.Empty].Background;
@@ -39,7 +39,7 @@ public class CellValuesToBackgroundConverter : MarkupConverter
             case CellValues.TwoThousandFortyEight:
                 return Utile.StateValueColor[CellValues.TwoThousandFortyEight].Background;
             default:
-                throw new Exception("CellValues key is missing from collection");
+                throw new Exception("Invalid CellValues");
         }
     }
 
