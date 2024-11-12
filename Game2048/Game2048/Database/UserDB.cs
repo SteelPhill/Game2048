@@ -16,10 +16,9 @@ public class UserDB : IUserDB
 
     public void Read()
     {
-        if (!File.Exists(Constants.UsersFilePath))
+        if (File.Exists(Constants.UsersFilePath))
         {
             Users = [];
-            File.Create(Constants.UsersFilePath);
             return;
         }
 
@@ -28,6 +27,9 @@ public class UserDB : IUserDB
 
     public void Write()
     {
+        if (Users.Count == 0)
+            return;
+
         File.WriteAllText(Constants.UsersFileName, XmlSerializerHelper.Serializing(Users));
     }
 }

@@ -34,7 +34,7 @@ public partial class App : Application
             Environment.Exit(0);
         }
 
-_authorizationWindowProvider.Show();
+        _authorizationWindowProvider.Show();
     }
 
     protected override void OnExit(ExitEventArgs e)
