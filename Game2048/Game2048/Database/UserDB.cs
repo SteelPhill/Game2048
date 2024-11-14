@@ -16,7 +16,7 @@ public class UserDB : IUserDB
 
     public void Read()
     {
-        if (File.Exists(Constants.UsersFilePath))
+        if (!File.Exists(Constants.UsersFilePath))
         {
             Users = [];
             return;

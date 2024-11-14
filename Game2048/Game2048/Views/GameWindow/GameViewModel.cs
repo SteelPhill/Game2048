@@ -13,7 +13,7 @@ namespace Game2048.Views.GameWindow;
 
 public class GameViewModel : ViewModel<GameWindow>
 {
-    public override object Header => "2048";
+    public override object Header => "2048"; 
 
     private readonly IMessenger _messenger;
     private readonly User _user;
@@ -118,16 +118,15 @@ public class GameViewModel : ViewModel<GameWindow>
     private void GameOver(string message)
     {
         MessageBox.Show(message, "Game over");
-        if (UserModel.HighScore < Score)
-            UserModel.HighScore = Score;
-        Score = 0;
-        _game.Restart();
+        OnRestart();
     }
 
     private void OnRestart()
     {
-        _game.Restart();
+        if (UserModel.HighScore < Score)
+            UserModel.HighScore = Score;
         Score = 0;
+        _game.Restart();
     }
 
     public override void Cleanup()

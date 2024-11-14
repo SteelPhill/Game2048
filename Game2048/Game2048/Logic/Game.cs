@@ -48,8 +48,7 @@ public class Game
 
     public void InsertTwoOrFour()
     {
-        var position = GetEmptyCoordinates();
-        _fieldModel.Field[position.Row][position.Column].Value = GetTwoOrFour();
+        GetEmptyCell().Value = GetTwoOrFour();
     }
 
     private CellValue GetTwoOrFour()
@@ -59,18 +58,10 @@ public class Game
             : CellValue.Two;
     }
 
-    private Coordinates GetEmptyCoordinates()
+    private CellModel GetEmptyCell()
     {
-        var coordinates = new Coordinates();
-
-        do
-        {
-            coordinates.Row = Utile.Random.Next(0, Constants.FieldSideSize);
-            coordinates.Column = Utile.Random.Next(0, Constants.FieldSideSize);
-
-        } while (!_fieldModel.Field[coordinates.Row][coordinates.Column].IsEmpty());
-
-        return coordinates;
+        var emptyCells = _fieldModel.Field.SelectMany(o => o).Where(c => c.IsEmpty()).ToList();
+        return emptyCells[Utile.Random.Next(0, emptyCells.Count - 1)];
     }
 
     public bool TryMoveRight()
