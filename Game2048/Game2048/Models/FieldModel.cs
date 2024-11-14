@@ -11,11 +11,11 @@ public class FieldModel
     {
         Field = [];
 
-        for (var i = 0; i < Constants.FieldSideSize; i++)
+        for (var i = 0; i < Constants.FieldRowsNumber; i++)
         {
             var row = new ObservableCollection<CellModel>();
 
-            for (var j = 0; j < Constants.FieldSideSize; j++)
+            for (var j = 0; j < Constants.FieldRowsNumber; j++)
                 row.Add(new CellModel(CellValue.Empty));
 
             Field.Add(row);

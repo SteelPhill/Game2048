@@ -28,8 +28,8 @@ public class Game
 
     public bool IsNoMoves()
     {
-        for (var i = 0; i < Constants.FieldSideSize; i++)
-            for (var j = 0; j < Constants.FieldSideSize - 1; j++)
+        for (var i = 0; i < Constants.FieldRowsNumber; i++)
+            for (var j = 0; j < Constants.FieldColumnsNumber - 1; j++)
                 if (_fieldModel.Field[i][j].Value == _fieldModel.Field[i][j + 1].Value ||
                     _fieldModel.Field[j][i].Value == _fieldModel.Field[j + 1][i].Value)
                     return false;
@@ -68,11 +68,11 @@ public class Game
     {
         var isMove = false;
 
-        for (var i = 0; i < Constants.FieldSideSize; i++)
+        for (var i = 0; i < Constants.FieldRowsNumber; i++)
         {
-            var column = Constants.FieldSideSize - 1;
+            var column = Constants.FieldColumnsNumber - 1;
 
-            for (var j = Constants.FieldSideSize - 2; j >= 0; j--)
+            for (var j = Constants.FieldColumnsNumber - 2; j >= 0; j--)
             {
                 if (_fieldModel.Field[i][j].IsEmpty())
                     continue;
@@ -113,11 +113,11 @@ public class Game
     {
         var isMove = false;
 
-        for (var j = 0; j < Constants.FieldSideSize; j++)
+        for (var j = 0; j < Constants.FieldColumnsNumber; j++)
         {
-            var row = Constants.FieldSideSize - 1;
+            var row = Constants.FieldRowsNumber - 1;
 
-            for (var i = Constants.FieldSideSize - 2; i >= 0; i--)
+            for (var i = Constants.FieldRowsNumber - 2; i >= 0; i--)
             {
                 if (_fieldModel.Field[i][j].IsEmpty())
                     continue;
@@ -157,11 +157,11 @@ public class Game
     {
         var isMove = false;
 
-        for (var i = 0; i < Constants.FieldSideSize; i++)
+        for (var i = 0; i < Constants.FieldRowsNumber; i++)
         {
             var column = 0;
 
-            for (var j = 1; j < Constants.FieldSideSize; j++)
+            for (var j = 1; j < Constants.FieldColumnsNumber; j++)
             {
                 if (_fieldModel.Field[i][j].IsEmpty())
                     continue;
@@ -202,11 +202,11 @@ public class Game
     {
         var isMove = false;
 
-        for (var j = 0; j < Constants.FieldSideSize; j++)
+        for (var j = 0; j < Constants.FieldColumnsNumber; j++)
         {
             var row = 0;
 
-            for (var i = 1; i < Constants.FieldSideSize; i++)
+            for (var i = 1; i < Constants.FieldRowsNumber; i++)
             {
                 if (_fieldModel.Field[i][j].IsEmpty())
                     continue;
