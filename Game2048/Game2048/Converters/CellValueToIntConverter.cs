@@ -5,14 +5,14 @@ using System.Globalization;
 
 namespace Game2048.Converters;
 
-public class CellValuesToBackgroundConverter : MarkupConverter
+public class CellValueToIntConverter : MarkupConverter
 {
     protected override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         if (value is not CellValue cellValue)
             throw new Exception("Argument value is not CellValue");
 
-        return Utile.StateValueColor[cellValue].Background;
+        return (int)cellValue;
     }
 
     protected override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

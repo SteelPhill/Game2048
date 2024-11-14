@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace Game2048.Converters;
 
-public class CellValuesToForegroundConverter : MarkupConverter
+public class CellValueToForegroundConverter : MarkupConverter
 {
     protected override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {

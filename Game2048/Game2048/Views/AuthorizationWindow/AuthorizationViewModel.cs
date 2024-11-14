@@ -90,13 +90,5 @@ public class AuthorizationViewModel : ViewModel<AuthorizationWindow>
     private void OnCancel()
     {
         _messenger.Send(new RequestCloseMessage(this, null));
-        Cleanup();
-    }
-
-    public override void Cleanup()
-    {
-        base.Cleanup();
-
-        _messenger.Unregister(this);
     }
 }

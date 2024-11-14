@@ -4,13 +4,13 @@ using System.Linq;
 
 namespace Game2048.Logic;
 
-public class Game
+public class GameService : IGameService
 {
     private readonly FieldModel _fieldModel;
 
     public int Score { get; private set; }
 
-    public Game(FieldModel fieldModel)
+    public GameService(FieldModel fieldModel)
     {
         _fieldModel = fieldModel;
 
@@ -20,22 +20,22 @@ public class Game
         Score = 0;
     }
 
-    public bool IsWin() => 
+    public bool IsWin() =>
         _fieldModel.Field.Any(c => c.Any(v => v.Value == CellValue.TwoThousandFortyEight));
 
-    public bool IsNoFreeSpace() => 
+    public bool IsNoFreeSpace() =>
         !_fieldModel.Field.Any(c => c.Any(v => v.Value == CellValue.Empty));
 
-    public bool IsNoMoves()
-    {
-        for (var i = 0; i < Constants.FieldRowsNumber; i++)
-            for (var j = 0; j < Constants.FieldColumnsNumber - 1; j++)
-                if (_fieldModel.Field[i][j].Value == _fieldModel.Field[i][j + 1].Value ||
-                    _fieldModel.Field[j][i].Value == _fieldModel.Field[j + 1][i].Value)
-                    return false;
+    public void InsertTwoOrFour() =>
+        GetEmptyCell().Value = GetTwoOrFour();
 
-        return true;
-    }
+    private CellModel GetEmptyCell() =>
+        _fieldModel.Field.SelectMany(o => o).Where(c => c.IsEmpty()).OrderBy(_ => Utile.Random.Next()).FirstOrDefault();
+
+    private CellValue GetTwoOrFour() =>
+        Utile.Random.Next(1, Constants.OneHundredPercent) >= Constants.NinetyPercent
+            ? CellValue.Four
+            : CellValue.Two;
 
     public void Restart()
     {
@@ -46,22 +46,15 @@ public class Game
             InsertTwoOrFour();
     }
 
-    public void InsertTwoOrFour()
+    public bool IsNoMoves()
     {
-        GetEmptyCell().Value = GetTwoOrFour();
-    }
+        for (var i = 0; i < Constants.FieldRowsNumber; i++)
+            for (var j = 0; j < Constants.FieldColumnsNumber - 1; j++)
+                if (_fieldModel.Field[i][j].Value == _fieldModel.Field[i][j + 1].Value ||
+                    _fieldModel.Field[j][i].Value == _fieldModel.Field[j + 1][i].Value)
+                    return false;
 
-    private CellValue GetTwoOrFour()
-    {
-        return Utile.Random.Next(1, Constants.OneHundredPercent) >= Constants.NinetyPercent
-            ? CellValue.Four
-            : CellValue.Two;
-    }
-
-    private CellModel GetEmptyCell()
-    {
-        var emptyCells = _fieldModel.Field.SelectMany(o => o).Where(c => c.IsEmpty()).ToList();
-        return emptyCells[Utile.Random.Next(0, emptyCells.Count - 1)];
+        return true;
     }
 
     public bool TryMoveRight()
@@ -210,7 +203,7 @@ public class Game
             {
                 if (_fieldModel.Field[i][j].IsEmpty())
                     continue;
-                
+
                 if (_fieldModel.Field[row][j].IsEmpty())
                 {
                     _fieldModel.Field[row][j].Value = _fieldModel.Field[i][j].Value;

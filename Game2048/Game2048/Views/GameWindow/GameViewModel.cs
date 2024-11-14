@@ -2,11 +2,9 @@
 using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
 using Game2048.Base;
 using Game2048.Entities;
 using Game2048.Logic;
-using Game2048.Messages;
 using Game2048.Models;
 
 namespace Game2048.Views.GameWindow;
@@ -15,10 +13,7 @@ public class GameViewModel : ViewModel<GameWindow>
 {
     public override object Header => "2048"; 
 
-    private readonly IMessenger _messenger;
     private readonly User _user;
-
-    private Game _game;
 
     private UserModel _userModel;
     private FieldModel _fieldModel;
@@ -42,17 +37,20 @@ public class GameViewModel : ViewModel<GameWindow>
         set => Set(ref _score, value);
     }
 
+    private IGameService _game;
+
     private ICommand _contentRenderedCommand;
     private ICommand _keyDownCommand;
     private ICommand _restartCommand;
+    private ICommand _closeCommand;
 
     public ICommand ContentRenderedCommand => _contentRenderedCommand ??= new RelayCommand(OnContentRendered);
     public ICommand KeyDownCommand => _keyDownCommand ??= new RelayCommand<KeyEventArgs>(OnKeyboardArrow);
     public ICommand RestartCommand => _restartCommand ??= new RelayCommand(OnRestart);
+    public ICommand CloseCommand => _closeCommand ??= new RelayCommand(OnClose);
 
-    public GameViewModel(IMessenger messenger, User user)
+    public GameViewModel(User user)
     {
-        _messenger = messenger;
         _user = user;
 
         UserModel = new UserModel();
@@ -67,7 +65,7 @@ public class GameViewModel : ViewModel<GameWindow>
         UserModel.HighScore = _user.HighScore;
         UserModel.IsRememberMe = _user.IsRememberMe;
 
-        _game = new Game(FieldModel);
+        _game = new GameService(FieldModel);
     }
 
     private void OnKeyboardArrow(KeyEventArgs e)
@@ -129,14 +127,11 @@ public class GameViewModel : ViewModel<GameWindow>
         _game.Restart();
     }
 
-    public override void Cleanup()
+    public void OnClose()
     {
+        if (UserModel.HighScore < Score)
+            UserModel.HighScore = Score;
         _user.HighScore = UserModel.HighScore;
-        _messenger.Send(new RequestCloseMessage(this, null));
-
-        base.Cleanup();
-
-        _messenger.Unregister(this);
     }
 
     public interface IFactory

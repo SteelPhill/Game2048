@@ -91,15 +91,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
-    <Compile Include="Converters\CellValuesToBackgroundConverter.cs" />
-    <Compile Include="Converters\CellValuesToForegroundConverter.cs" />
-    <Compile Include="Converters\CellValuesToIntConverter.cs" />
+    <Compile Include="Converters\CellValueToBackgroundConverter.cs" />
+    <Compile Include="Converters\CellValueToForegroundConverter.cs" />
+    <Compile Include="Converters\CellValueToIntConverter.cs" />
     <Compile Include="Database\IUserDB.cs" />
     <Compile Include="Database\UserDB.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Enums\CellValue.cs" />
     <Compile Include="Helpers\XmlSerializerHelper.cs" />
-    <Compile Include="Logic\Game.cs" />
+    <Compile Include="Logic\GameService.cs" />
+    <Compile Include="Logic\IGameService.cs" />
     <Compile Include="Models\CellModel.cs" />
     <Compile Include="Models\FieldModel.cs" />
     <Compile Include="Models\UserModel.cs" />
