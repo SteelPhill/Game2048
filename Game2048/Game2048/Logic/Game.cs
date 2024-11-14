@@ -21,10 +21,10 @@ public class Game
     }
 
     public bool IsWin() => 
-        _fieldModel.Field.Any(c => c.Any(v => v.Value == CellValues.TwoThousandFortyEight));
+        _fieldModel.Field.Any(c => c.Any(v => v.Value == CellValue.TwoThousandFortyEight));
 
     public bool IsNoFreeSpace() => 
-        !_fieldModel.Field.Any(c => c.Any(v => v.Value == CellValues.Empty));
+        !_fieldModel.Field.Any(c => c.Any(v => v.Value == CellValue.Empty));
 
     public bool IsNoMoves()
     {
@@ -52,11 +52,11 @@ public class Game
         _fieldModel.Field[position.Row][position.Column].Value = GetTwoOrFour();
     }
 
-    private CellValues GetTwoOrFour()
+    private CellValue GetTwoOrFour()
     {
         return Utile.Random.Next(1, Constants.OneHundredPercent) >= Constants.NinetyPercent
-            ? CellValues.Four
-            : CellValues.Two;
+            ? CellValue.Four
+            : CellValue.Two;
     }
 
     private Coordinates GetEmptyCoordinates()
@@ -90,14 +90,14 @@ public class Game
                 {
                     _fieldModel.Field[i][column].Value = _fieldModel.Field[i][j].Value;
                     if (j != column)
-                        _fieldModel.Field[i][j].Value = CellValues.Empty;
+                        _fieldModel.Field[i][j].Value = CellValue.Empty;
                     isMove = true;
                 }
                 else if (_fieldModel.Field[i][column].Value == _fieldModel.Field[i][j].Value)
                 {
-                    var newValue = (CellValues)((int)_fieldModel.Field[i][column].Value * 2);
+                    var newValue = (CellValue)((int)_fieldModel.Field[i][column].Value * 2);
                     _fieldModel.Field[i][column].Value = newValue;
-                    _fieldModel.Field[i][j].Value = CellValues.Empty;
+                    _fieldModel.Field[i][j].Value = CellValue.Empty;
                     column--;
                     Score += (int)newValue;
                     isMove = true;
@@ -109,7 +109,7 @@ public class Game
                         continue;
 
                     _fieldModel.Field[i][column].Value = _fieldModel.Field[i][j].Value;
-                    _fieldModel.Field[i][j].Value = CellValues.Empty;
+                    _fieldModel.Field[i][j].Value = CellValue.Empty;
                     isMove = true;
                 }
             }
@@ -135,14 +135,14 @@ public class Game
                 {
                     _fieldModel.Field[row][j].Value = _fieldModel.Field[i][j].Value;
                     if (i != row)
-                        _fieldModel.Field[i][j].Value = CellValues.Empty;
+                        _fieldModel.Field[i][j].Value = CellValue.Empty;
                     isMove = true;
                 }
                 else if (_fieldModel.Field[row][j].Value == _fieldModel.Field[i][j].Value)
                 {
-                    var newValue = (CellValues)((int)_fieldModel.Field[row][j].Value * 2);
+                    var newValue = (CellValue)((int)_fieldModel.Field[row][j].Value * 2);
                     _fieldModel.Field[row][j].Value = newValue;
-                    _fieldModel.Field[i][j].Value = CellValues.Empty;
+                    _fieldModel.Field[i][j].Value = CellValue.Empty;
                     row--;
                     Score += (int)newValue;
                     isMove = true;
@@ -154,7 +154,7 @@ public class Game
                         continue;
 
                     _fieldModel.Field[row][j].Value = _fieldModel.Field[i][j].Value;
-                    _fieldModel.Field[i][j].Value = CellValues.Empty;
+                    _fieldModel.Field[i][j].Value = CellValue.Empty;
                     isMove = true;
                 }
             }
@@ -179,14 +179,14 @@ public class Game
                 {
                     _fieldModel.Field[i][column].Value = _fieldModel.Field[i][j].Value;
                     if (j != column)
-                        _fieldModel.Field[i][j].Value = CellValues.Empty;
+                        _fieldModel.Field[i][j].Value = CellValue.Empty;
                     isMove = true;
                 }
                 else if (_fieldModel.Field[i][column].Value == _fieldModel.Field[i][j].Value)
                 {
-                    var newValue = (CellValues)((int)_fieldModel.Field[i][column].Value * 2);
+                    var newValue = (CellValue)((int)_fieldModel.Field[i][column].Value * 2);
                     _fieldModel.Field[i][column].Value = newValue;
-                    _fieldModel.Field[i][j].Value = CellValues.Empty;
+                    _fieldModel.Field[i][j].Value = CellValue.Empty;
                     column++;
                     Score += (int)newValue;
                     isMove = true;
@@ -198,7 +198,7 @@ public class Game
                         continue;
 
                     _fieldModel.Field[i][column].Value = _fieldModel.Field[i][j].Value;
-                    _fieldModel.Field[i][j].Value = CellValues.Empty;
+                    _fieldModel.Field[i][j].Value = CellValue.Empty;
                     isMove = true;
                 }
             }
@@ -224,14 +224,14 @@ public class Game
                 {
                     _fieldModel.Field[row][j].Value = _fieldModel.Field[i][j].Value;
                     if (i != row)
-                        _fieldModel.Field[i][j].Value = CellValues.Empty;
+                        _fieldModel.Field[i][j].Value = CellValue.Empty;
                     isMove = true;
                 }
                 else if (_fieldModel.Field[row][j].Value == _fieldModel.Field[i][j].Value)
                 {
-                    var newValue = (CellValues)((int)_fieldModel.Field[row][j].Value * 2);
+                    var newValue = (CellValue)((int)_fieldModel.Field[row][j].Value * 2);
                     _fieldModel.Field[row][j].Value = newValue;
-                    _fieldModel.Field[i][j].Value = CellValues.Empty;
+                    _fieldModel.Field[i][j].Value = CellValue.Empty;
                     row++;
                     Score += (int)newValue;
                     isMove = true;
@@ -243,7 +243,7 @@ public class Game
                         continue;
 
                     _fieldModel.Field[row][j].Value = _fieldModel.Field[i][j].Value;
-                    _fieldModel.Field[i][j].Value = CellValues.Empty;
+                    _fieldModel.Field[i][j].Value = CellValue.Empty;
                     isMove = true;
                 }
             }

@@ -5,21 +5,21 @@ namespace Game2048.Models;
 
 public class CellModel : ObservableObject
 {
-    private CellValues _value;
+    private CellValue _value;
 
-    public CellValues Value
+    public CellValue Value
     {
         get => _value;
         set => Set(ref _value, value);
     }
 
-    public CellModel(CellValues value)
+    public CellModel(CellValue value)
     {
         Value = value;
     }
 
     public bool IsEmpty()
     {
-        return Value == CellValues.Empty;
+        return Value == CellValue.Empty;
     }
 }

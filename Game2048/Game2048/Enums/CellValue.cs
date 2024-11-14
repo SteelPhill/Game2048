@@ -1,6 +1,6 @@
 ﻿namespace Game2048.Entities;
 
-public enum CellValues
+public enum CellValue
 {
     Empty = 0,
     Two = 2,

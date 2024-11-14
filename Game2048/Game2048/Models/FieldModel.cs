@@ -16,7 +16,7 @@ public class FieldModel
             var row = new ObservableCollection<CellModel>();
 
             for (var j = 0; j < Constants.FieldSideSize; j++)
-                row.Add(new CellModel(CellValues.Empty));
+                row.Add(new CellModel(CellValue.Empty));
 
             Field.Add(row);
         }
@@ -26,6 +26,6 @@ public class FieldModel
     {
         foreach (var row in Field)
             foreach (var cell in row)
-                cell.Value = CellValues.Empty;
+                cell.Value = CellValue.Empty;
     }
 }
